@@ -17,7 +17,7 @@ install: venv
 
 
 # Build and start container
-start:
+build:
 	@echo "Building container..."
 	docker-compose up --build -d
 
@@ -25,11 +25,6 @@ start:
 stop:
 	@echo "Stoping container..."
 	docker-compose down
-
-# Restart container
-restart:
-	@echo "Restart container..."
-	docker-compose restart
 
 # Start tests with pytest
 test: install

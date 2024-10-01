@@ -1,5 +1,5 @@
 services:
-  bot:
+  hmph-gpt:
     build: .
     container_name: hmph-gpt
     environment:
