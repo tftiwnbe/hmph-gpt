@@ -1,0 +1,8 @@
+services:
+  bot:
+    build: .
+    container_name: hmph-gpt
+    environment:
+      #  Required:
+      - BOT_TOKEN=your_token_here
+    restart: on-failure
