@@ -1,6 +1,6 @@
 VENV = venv
 PYTHON = $(VENV)/bin/python
-REQUIREMENTS = requirements.txt
+REQUIREMENTS = requirements.dev.txt
 
 # Create venv if don't exists
 venv:
@@ -15,6 +15,15 @@ install: venv
 	$(PYTHON) -m pip install --upgrade pip
 	$(PYTHON) -m pip install -r $(REQUIREMENTS)
 
+# Run the bot
+run: install
+	@echo "Running the bot..."
+	$(PYTHON) bot
+
+# Run the bot and restart on Python file changes
+watch: install
+	@echo "Running in watch mode..."
+	$(VENV)/bin/watchmedo auto-restart --patterns="*.py" --recursive -- $(PYTHON) bot
 
 # Build and start container
 build:
@@ -39,8 +48,3 @@ clean:
 # Recreate venv
 reinstall: clean venv install
 	@echo "Venv recreated."
-
-# Freeze venv
-freeze: install
-	@echo "Saving dependencies in $(REQUIREMENTS)..."
-	$(PYTHON) -m pip freeze > $(REQUIREMENTS)
