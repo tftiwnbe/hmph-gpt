@@ -1,0 +1,15 @@
+# Tests
+tests/
+
+# Dev environment
+venv/
+.env*
+Makefile
+requirements.dev.txt
+
+# Docker
+docker-compose.yaml
+docker-compose.override.yaml
+
+# Other
+.DS_Store
