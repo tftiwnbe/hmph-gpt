@@ -1,9 +1,10 @@
-# Tests
 tests/
+data/
+git/
 
 # Dev environment
 venv/
-.env*
+.env.*
 Makefile
 requirements.dev.txt
 
@@ -13,3 +14,4 @@ docker-compose.override.yaml
 
 # Other
 .DS_Store
+*cache*

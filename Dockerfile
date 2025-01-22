@@ -1,10 +1,20 @@
-FROM python:3.12
+FROM python:3.13-slim
 
-WORKDIR /code
+RUN pip install --no-cache-dir watchdog
 
-COPY ./requirements.txt .
+WORKDIR /bot
+
+COPY requirements.txt .
+
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-ENTRYPOINT ["python3", "-m", "bot"]
+ENV DEVELOPMENT=false
+ENV IN_CONTAINER=true
+
+CMD ["bash", "-c", "if [ \"$DEVELOPMENT\" = \"true\" ]; then \
+  cd bot && watchmedo auto-restart --patterns='*.py' --recursive -- python main.py; \
+  else \
+  cd bot && python main.py; \
+  fi"]

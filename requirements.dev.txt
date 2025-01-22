@@ -1,3 +1,5 @@
 -r requirements.txt
 
 watchdog==5.0.3
+pytest>=8.3.3
+pytest-asyncio>=0.24.0
