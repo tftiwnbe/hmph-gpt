@@ -14,10 +14,10 @@ from database.crud.user import (
     update_user,
 )
 from database.schemas.user import UserCreate, UserUpdate
-from loguru import logger
-
-from main import bot
+from handlers.gpt import generate_response
 from keyboards.users import get_name_keyboard, get_status_keyboard
+from loguru import logger
+from main import bot
 from states import UserState
 
 router = Router()
@@ -113,3 +113,29 @@ async def catching_username_handler(message: types.Message, state: FSMContext):
             parse_mode=ParseMode.HTML,
         )
         logger.error(e)
+
+
+@router.message(StateFilter(None), F.text)
+async def ask_gpt(message: types.Message):
+    if message.text is not None:
+        answer = "Failed to retrieve a response."
+        used_model = ""
+        completion_tokens = 0
+        prompt_tokens = 0
+
+        try:
+            (
+                answer,
+                used_model,
+                completion_tokens,
+                prompt_tokens,
+            ) = await generate_response(message.text)
+        except Exception as e:
+            answer = f"An error occurred while processing the request: {str(e)}"
+
+        if answer is None:
+            answer = "GPT did not return a response."
+
+        await message.answer(answer)
+    else:
+        await message.answer("The message does not contain any text.")
