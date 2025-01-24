@@ -4,6 +4,7 @@ from aiogram import F, Router, types
 from aiogram.enums import ParseMode
 from aiogram.filters import Command, StateFilter
 from aiogram.fsm.context import FSMContext
+from filters import IsActiveUser
 from config import settings
 from database import get_db_session
 from database.crud.user import (
@@ -115,7 +116,7 @@ async def catching_username_handler(message: types.Message, state: FSMContext):
         logger.error(e)
 
 
-@router.message(StateFilter(None), F.text)
+@router.message(StateFilter(None), IsActiveUser(), F.text)
 async def ask_gpt(message: types.Message):
     if message.text is not None:
         answer = "Failed to retrieve a response."
