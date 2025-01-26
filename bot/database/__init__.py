@@ -83,13 +83,13 @@ def run_upgrade(connection, cfg) -> None:
     command.upgrade(cfg, "head")
 
 
-async def run_async_upgrade() -> None:
+async def run_async_upgrade(alembic_cfg_path: str = "migrations/alembic.ini") -> None:
     logger.info("Running migrations...")
     start_time = time.monotonic()
     try:
         async with sessionmanager.connect() as connection:
             await connection.run_sync(
-                run_upgrade, config.Config("migrations/alembic.ini")
+                lambda conn: run_upgrade(conn, config.Config(alembic_cfg_path))
             )
         elapsed_time = time.monotonic() - start_time
         logger.success(f"Database up to date in {elapsed_time:.2f} seconds")
